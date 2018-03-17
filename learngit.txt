@@ -53,3 +53,9 @@ git commit
 git remote add origin git@server-name:path/repo-name.git
 git push -u origin master第一次推送master分支的所有内容
 git push origin master推送最新更改
+
+How to git push a new folder?
+1. git add my_project  //(folder_name)
+2. git add my_project/*
+3. git commit -m "add sth new"
+4. git push origin master
