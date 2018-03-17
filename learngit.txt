@@ -59,3 +59,9 @@ How to git push a new folder?
 2. git add my_project/*
 3. git commit -m "add sth new"
 4. git push origin master
+
+git commit 后忘记输入信息，卡在一个界面？
+1.按下小写i，会进入编辑模式，可以在此模式下输入commit message
+2.按下esc, 退出编辑模式，再输入wq，就可以保存退出了 w:write q:quit
+3.也可以按下esc,切换到大写模式，连按两下ZZ
+
