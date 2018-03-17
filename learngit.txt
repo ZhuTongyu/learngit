@@ -1,0 +1,55 @@
+learn git
+$ pwd 用于显示当前目录
+$ cd learngit
+$ pwd
+git init
+git add data_process1.py
+git commit 可以一次性把暂存区的所有修改提交到分支
+git 在pull或者合并分支的时候有时会遇到这个界面。
+可以不管(直接下面3,4步)，如果要输入解释的话就需要
+{
+1.按键盘字母 i 进入insert模式
+2.修改最上面那行黄色合并信息,可以不修改
+3.按键盘左上角"Esc"
+4.输入":wq",注意是冒号+wq,按回车键即可}
+
+git commit -m "wrote a readme file"
+
+add, commit 两步，commit可以一次提交很多文件
+
+git status
+git diff readme.txt
+git diff HEAD --  readme.txt 查看工作区和版本库里面最新版本的区别
+git log 查看提交历史
+git log --pretty=oneline 输出信息会少一点
+commit id
+HEAD 当前版本   HEAD^ 上一版本  HEAD^^ 上上一个版本 
+HEAD~100
+git reset --hard HEAD^
+git reset --hard 3628164
+git reflog 记录每一次命令 查看命令历史
+untracked files 从未被添加过
+
+stage 暂存区
+git checkout --file 可以丢弃工作区的修改（总之
+，就是让这个文件回到最近一次git commit或git add的状态）
+git reset HEAD file 把暂存区的修改撤销掉（unstage），重新放回工作区
+工作区 版本库(暂存区)
+场景1：当你改乱了工作区某个文件的内容，想直接丢弃工作区的修改时，
+用命令git checkout -- file。
+
+场景2：当你不但改乱了工作区某个文件的内容，还添加到了暂存区时，
+想丢弃修改，分两步，第一步用命令git reset HEAD file，
+就回到了场景1，第二步按场景1操作。
+
+场景3：已经提交了不合适的修改到版本库时，想要撤销本次提交，
+参考版本回退一节，不过前提是没有推送到远程库。
+
+rm test.txt 或者 直接在文件管理器删除文件，导致工作区和版本库不一致
+确实要删除文件
+git commit
+如果删错了，git checkout -- test.txt
+多台电脑要往github传东西，需要设置多个ssh key
+git remote add origin git@server-name:path/repo-name.git
+git push -u origin master第一次推送master分支的所有内容
+git push origin master推送最新更改
