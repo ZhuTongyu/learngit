@@ -4,6 +4,7 @@ Created on Mon Apr  9 16:54:52 2018
 
 @author: TongYu
 """
+# line 85  44  69  127
 import numpy as np
 import math
 #import matplotlib.pyplot as plt
@@ -26,29 +27,34 @@ new_list.sort() # sorted() 函数范围一个对象，此函数不返回对象
 new_list1 = list(map(str,new_list)) # list 中 int -> str
 new_list2 = []  # 初始化list
 for filename in new_list1:
-    new_list2.append(os.path.join(path,filename)) # list末尾追加元素
-
+#   new_list2 = C:\ZTY\MRR20_data_export\New_export_py\3\-16 .. 16
+    new_list2.append(os.path.join(path,filename)) # list末尾追加元素 
+#   0     C:\ZTY\MRR20_data_export\New_export_py\3\-16 
 for index_,fileIdx in enumerate(new_list2):
     path_sub = r'MRR20\20180408\Rotary Test' # r raw string
-    path_dir = bytes(fileIdx+'/'+path_sub, encoding = "utf8")
-    path_str = fileIdx+'/'+path_sub
+#    C:\ZTY\MRR20_data_export\New_export_py\3\-16\MRR20\20180408\Rotary Test
+    path_dir = bytes(fileIdx+'/'+path_sub, encoding = "utf8") # bytes形式，给计算机看
+    path_str = fileIdx+'/'+path_sub  # str格式，给人看
 #    print(path_str)
     speed_bin = abs(math.floor(new_list[index_]/0.13))
-    f_list_sub = os.listdir(path_dir)
-#   一个文件目录下的所有文件 
+    f_list_sub = os.listdir(path_dir)  # os.listdir只认byte????
+#   一个文件目录下的所有文件  -40~40 degree
+#   000_+000_MRR20_20180330 16-27-16.265.hyd
     for i in f_list_sub:
-
+#       两个bool与，可以用and吗？？？？ 之前为什么用np.logical_and??
         if((i[5:8] == b'000') and (os.path.splitext(i)[1] == b'.hyd')): # split 分离文件名和扩展名
 #            print('correct')
 #            print(fileIdx)
             print(path_dir)
 #            print(i)
-            path_str_all = path_str+'/'+bytes.decode(i) # bytes是给计算机看的，str是给人看的
+# C:\ZTY\MRR20_data_export\New_export_py\3\-16\MRR20\20180408\Rotary Test\000_+000_MRR20_20180408 16-27-16.265.hyd        
+            path_str_all = path_str+'/'+bytes.decode(i) # 转成str格式， bytes是给计算机看的，str是给人看的
 #            path_all = bytes(path_dir.decode()+'/'+i, encoding = "utf8")
 #            path_all = os.path.join(fileIdx,i)
-            path_bytes_all = bytes(path_str_all,encoding = "utf8")
+            path_bytes_all = bytes(path_str_all,encoding = "utf8") # 转成bytes格式，输入给计算机
 #            print(path_str_all)
 #            print(path_bytes_all)
+#            选中文件.hyd
             pStr = ctypes.c_char_p(path_bytes_all)
             ret = Hdll.OpenRadarDataFile(pStr)
             arrayTableNumber = (ctypes.c_long*RADAR_MAX_COUNT)()
@@ -60,7 +66,7 @@ for index_,fileIdx in enumerate(new_list2):
             iLen = (ctypes.c_long*1)()
             dataBuf = np.array(range(RADAR_DATA_MAX_SIZE), dtype = np.int32)
             flag = 0
-#           帧数
+#           帧数  10帧是怎么计算出来的？？arrayTableDataCount[0]？？
             for i in range(arrayTableDataCount[0]):
                 retHyc = Hdll.GetRadarData(0, i, fCapTime, dataBuf.ctypes.data, iLen)
                 FrameData = dataBuf[256:256+(iLen[0]>>2)].byteswap()
@@ -76,6 +82,7 @@ for index_,fileIdx in enumerate(new_list2):
                     #2.打印出该行的[2：9]列，8个复数，共16个数，实虚实虚实虚实虚。。。
                     #3.循环10次，打印出10帧的数据
                     # target range_bin = 10; speed_bin = 18
+#                    Tar是复数，需要加real吧？？？调试看一下有没有影响
                     if(abs(Tar[TarIdx,0]-14)<3 and abs(Tar[TarIdx,1]-speed_bin)<3):
                         # 存储满足条件targets对应的mag能量图的能量，筛选最大峰值点
                         b[0, j] = magb[int(Tar[TarIdx,0].real),int(Tar[TarIdx,1].real)]
@@ -117,6 +124,7 @@ for index_,fileIdx in enumerate(new_list2):
         #                                while(flag>0):
                                         output[index_,2*w+16*(i-flag)] = final_new[0,w].real
                                         output[index_,2*w+1+16*(i-flag)] = final_new[0,w].imag
+#                        break位置有讲究
                                     break
 
             break
