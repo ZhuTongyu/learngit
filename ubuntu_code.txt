@@ -1,0 +1,2 @@
+emacs prog1.c &
+sudo apt-get install valgrind
