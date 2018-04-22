@@ -1,2 +1,42 @@
 emacs prog1.c &
+gcc prog1.c -o prog
+gcc -g -Wall -Wshadow  mystring.o main.o -o mystring
+
+//分开编译，编译和链接
+gcc -g -Wall -Wshadow -c aredistinct.c
+gcc -g -Wall -Wshadow -c main.c
+gcc -g -Wall -Wshadow aredistinct.o main.o -o prog
+
+// 工具 gcc gdb valgrind
 sudo apt-get install valgrind
+man string # manual 手册，展示与处理字符串相关的函数
+Makefile指令
+
+GCC = gcc
+CFLAGS = -g -Wall -Wshadow
+OBJS = mystring.o main.o
+HDRS = mystring.h
+VAL = valgrind --tool=memcheck --leak-check=full 
+VAL += --verbose --log-file=
+
+mystring: $(OBJS) $(HDRS)
+	$(GCC) $(CFLAGS) $(OBJS) -o $@   // $@ = mystring 意味着  :之前的标志符  
+
+.c.o: 
+	$(GCC) $(CFLAGS) -c $*.c
+
+clean:
+	rm -f mystring $(OBJS) out_* log*
+
+testall: test0 test1 test2
+
+test0: mystring
+	$(VAL)log0 ./mystring strlen input out_len
+	diff -q out_len expected_strlen
+	
+# 找到死循环
+$ ./mystring strlen input output_strlen
+$ gdb mystring  // gdb把可执行文件作为输入，而不是.c文件
+(gdb) r strlen input output_strlen // r = run 代替 ./mystring
+Ctrl-c 中断程序正常的执行
+在(gdb)提示符处，输入list来显示代码
